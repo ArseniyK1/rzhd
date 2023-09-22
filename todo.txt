@@ -1,0 +1,8 @@
+    ❌ Cделать бэк по этому приложению (использовать SQLLite)
+
+❌ get: список поездов, билетов
+❌ post: передать айди поезда, 
+номер билета
+✅
+
+CREATE TABLE tickets (tickets_id INTEGER NOT NULL,tickets_cost INTEGER,tickets_count INTEGER,FOREIGN KEY(tickets_id) REFERENCES flight (flight_id),PRIMARY KEY(tickets_id AUTOINCREMENT));
