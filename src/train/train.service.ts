@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { getAllDataEntitys, getOneColumnEntitys } from 'src/connect-db';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  getAllDataEntitys,
+  getOneColumnEntitys,
+  validateId,
+} from 'src/connect-db';
 
 @Injectable()
 export class TrainService {
@@ -9,11 +13,13 @@ export class TrainService {
   }
 
   async findOne(id: number) {
-    const data = await getOneColumnEntitys('train', 'train_id', id);
-    return data;
-  }
+    const isValidId = await validateId('train', id);
 
-  remove(id: number) {
-    return `This action removes a #${id} train`;
+    if (isValidId) {
+      const data = await getOneColumnEntitys('train', 'train_id', id);
+      return data;
+    } else {
+      throw new NotFoundException('Select train_id not found');
+    }
   }
 }

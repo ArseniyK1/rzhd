@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  getAllDataEntitys,
+  getOneColumnEntitys,
+  updateColumnById,
+  validateId,
+} from 'src/connect-db';
 
 @Injectable()
 export class TicketsService {
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+  async findAll() {
+    const data = await getAllDataEntitys('tickets');
+    return data;
   }
 
-  findAll() {
-    return `This action returns all tickets`;
+  async findOne(id: number) {
+    const isValidId = await validateId('tickets', id);
+
+    if (isValidId) {
+      const data = await getOneColumnEntitys('tickets', 'tickets_id', id);
+      return data.map((obj) => obj.tickets_id);
+    } else {
+      throw new NotFoundException('Select tickets_id not found');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
+  async increment(id: number) {
+    const isValidId = await validateId('tickets', id);
+
+    if (isValidId) {
+      const data = await updateColumnById('tickets', 'tickets_count', id, '+');
+
+      return data;
+    } else {
+      throw new NotFoundException('Select tickets_id not found');
+    }
   }
 
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
+  async decrement(id: number) {
+    const isValidId = await validateId('tickets', id);
 
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
+    if (isValidId) {
+      const data = await updateColumnById('tickets', 'tickets_count', id, '-');
+      return data;
+    } else {
+      throw new NotFoundException('Select tickets_id not found');
+    }
   }
 }

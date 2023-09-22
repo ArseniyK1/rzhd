@@ -1,26 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFlightDto } from './dto/create-flight.dto';
-import { UpdateFlightDto } from './dto/update-flight.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  getAllDataEntitys,
+  getOneColumnEntitys,
+  validateId,
+} from 'src/connect-db';
 
 @Injectable()
 export class FlightService {
-  create(createFlightDto: CreateFlightDto) {
-    return 'This action adds a new flight';
+  async findAll() {
+    const data = await getAllDataEntitys('flight');
+    return data;
   }
 
-  findAll() {
-    return `This action returns all flight`;
-  }
+  async findOne(id: number) {
+    const isValidId = await validateId('flight', id);
 
-  findOne(id: number) {
-    return `This action returns a #${id} flight`;
-  }
-
-  update(id: number, updateFlightDto: UpdateFlightDto) {
-    return `This action updates a #${id} flight`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} flight`;
+    if (isValidId) {
+      const data = await getOneColumnEntitys('flight', 'flight_id', id);
+      return data;
+    } else {
+      throw new NotFoundException('Select flight_id not found');
+    }
   }
 }
