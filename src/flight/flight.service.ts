@@ -1,25 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  getAllDataEntitys,
-  getOneColumnEntitys,
-  validateId,
-} from 'src/connect-db';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Flight } from '../entities/Flight.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FlightService {
-  async findAll() {
-    const data = await getAllDataEntitys('flight');
-    return data;
+  constructor(
+    @InjectRepository(Flight)
+    private readonly flightRepository: Repository<Flight>,
+  ) {}
+
+  async findAll(): Promise<Flight[]> {
+    try {
+      const data = await this.flightRepository.find();
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error; // Прокинуть ошибку дальше
+    }
   }
 
   async findOne(id: number) {
-    const isValidId = await validateId('flight', id);
-
-    if (isValidId) {
-      const data = await getOneColumnEntitys('flight', 'flight_id', id);
-      return data;
-    } else {
-      throw new NotFoundException('Select flight_id not found');
-    }
+    return '1 flight';
   }
 }
+//
+//

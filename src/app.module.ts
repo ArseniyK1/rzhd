@@ -4,9 +4,20 @@ import { AppService } from './app.service';
 import { TrainModule } from './train/train.module';
 import { FlightModule } from './flight/flight.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from '../ormconfig';
+import { BasketModule } from './basket/basket.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TrainModule, FlightModule, TicketsModule],
+  imports: [
+    TypeOrmModule.forRoot(config),
+
+    TrainModule,
+    FlightModule,
+    TicketsModule,
+    BasketModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

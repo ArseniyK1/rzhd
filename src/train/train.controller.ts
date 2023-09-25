@@ -9,18 +9,20 @@ import {
 } from '@nestjs/common';
 import { TrainService } from './train.service';
 import { TrainDto } from './dto/train.dto';
+import { Train } from 'src/entities/Train.entity';
+import { CreateTrainDto } from './dto/create-train.dto';
 
 @Controller('train')
 export class TrainController {
   constructor(private readonly trainService: TrainService) {}
 
-  // @Post()
-  // create(@Body() createTrainDto: CreateTrainDto) {
-  //   return this.trainService.create(createTrainDto);
-  // }
+  @Post()
+  create(@Body() createTrainDto: CreateTrainDto) {
+    return this.trainService.create(createTrainDto);
+  }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Train[]> {
     return this.trainService.findAll();
   }
 
