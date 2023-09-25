@@ -7,7 +7,6 @@ import { TicketsModule } from './tickets/tickets.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from '../ormconfig';
 import { BasketModule } from './basket/basket.module';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [

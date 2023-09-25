@@ -8,9 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TrainService } from './train.service';
-import { TrainDto } from './dto/train.dto';
 import { Train } from 'src/entities/Train.entity';
 import { CreateTrainDto } from './dto/create-train.dto';
+import { UpdateTrainDto } from './dto/update-train.dto';
 
 @Controller('train')
 export class TrainController {
@@ -31,13 +31,15 @@ export class TrainController {
     return this.trainService.findOne(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateTrainDto: UpdateTrainDto) {
-  //   return this.trainService.update(+id, updateTrainDto);
-  // }
+  @Patch(':id')
+  async update(@Param('id') id: number, @Body() updateTestDto: UpdateTrainDto) {
+    const updatedTrain = await this.trainService.update(id, updateTestDto);
+    return updatedTrain;
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.trainService.remove(+id);
-  // }
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    await this.trainService.remove(id);
+    return { message: 'Train deleted successfully' };
+  }
 }
