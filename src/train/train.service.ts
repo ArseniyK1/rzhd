@@ -10,31 +10,43 @@ export class TrainService {
     @InjectRepository(Train)
     private readonly trainRepository: Repository<Train>,
   ) {}
+
   async findAll(): Promise<Train[]> {
     try {
       const data = await this.trainRepository.find();
       return data;
     } catch (error) {
       console.error(error);
-      throw error; // Прокинуть ошибку дальше
+      throw error;
     }
   }
 
-  async findOne(id: number) {
-    return 'get 1 train';
+  async findOne(id: number): Promise<Train | undefined> {
+    try {
+      const train = await this.trainRepository.findOne({
+        where: {
+          train_id: id,
+        },
+      });
+      if (!train) {
+        throw new NotFoundException(`Train with ID ${id} not found`);
+      }
+      return train;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   async create(dto: CreateTrainDto): Promise<Train> {
     const { train_name, train_wagon_types } = dto;
     console.log(train_name, train_wagon_types);
 
-    // Создайте новый объект Train с помощью данных из DTO
     const newTrain = this.trainRepository.create({
       train_name,
       train_wagon_types,
     });
 
-    // Сохраните новый объект Train в базе данных
     const savedTrain = await this.trainRepository.save(newTrain);
 
     return savedTrain;
