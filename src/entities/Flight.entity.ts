@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Train } from './Train.entity';
 import { Ticket } from './Ticket.entity';
@@ -29,6 +30,7 @@ export class Flight {
   travel_time: number;
 
   @ManyToOne(() => Train, (train) => train.flights)
+  @JoinColumn({ name: 'train_id' }) // Указываем имя колонки в БД
   train: Train;
 
   @OneToMany(() => Ticket, (ticket) => ticket.flight)

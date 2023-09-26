@@ -32,14 +32,14 @@ export class TrainController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateTestDto: UpdateTrainDto) {
-    const updatedTrain = await this.trainService.update(id, updateTestDto);
+  update(@Param('id') id: number, @Body() updateTestDto: UpdateTrainDto) {
+    const updatedTrain = this.trainService.update(id, updateTestDto);
     return updatedTrain;
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
-    await this.trainService.remove(id);
+  remove(@Param('id') id: number) {
+    this.trainService.remove(id);
     return { message: 'Train deleted successfully' };
   }
 }

@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { join } from 'path';
 import { Basket } from 'src/entities/Basket.entity';
 import { Flight } from 'src/entities/Flight.entity';
 import { Ticket } from 'src/entities/Ticket.entity';
